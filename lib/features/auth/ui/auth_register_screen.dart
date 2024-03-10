@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_workshop_tweet_app/design/app_widgets.dart';
 import 'package:flutter_workshop_tweet_app/features/auth/bloc/auth_bloc.dart';
 
 class AuthRegisterScreen extends StatefulWidget {
@@ -25,15 +26,7 @@ class _AuthRegisterScreenState extends State<AuthRegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Container(),
-        title: Container(
-          child: SizedBox(
-              height: 40,
-              width: 120,
-              child: SvgPicture.asset("assets/logo.svg", color: Colors.white)),
-        ),
-      ),
+      appBar: AppBar(leading: Container(), title: AppLogoWidget()),
       body: BlocConsumer<AuthBloc, AuthState>(
         bloc: authBloc,
         listenWhen: (previous, current) => current is AuthActionState,

@@ -1,4 +1,3 @@
 class Config {
-  static const String serverUrl =
-      "https://flutter-ts-workshop-backend.onrender.com/api/v1/";
+  static const String serverUrl = "http://localhost:3000/api/v1/";
 }

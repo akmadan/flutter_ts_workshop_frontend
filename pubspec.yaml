@@ -34,7 +34,9 @@ dependencies:
   bloc: ^8.1.2
   dio: ^5.4.0
   onboarding: ^3.1.0
+  uuid:
   flutter_svg: ^2.0.9
+  intl: ^0.19.0
 
 
   # The following adds the Cupertino Icons font to your application.

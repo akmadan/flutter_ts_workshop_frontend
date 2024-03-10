@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_workshop_tweet_app/core/local_db/shared_prefs_manager.dart';
@@ -6,7 +7,7 @@ import 'package:flutter_workshop_tweet_app/features/onboarding/ui/onboarding_scr
 import 'package:flutter_workshop_tweet_app/features/tweet/ui/tweets_page.dart';
 
 class DecidePage extends StatefulWidget {
-  static StreamController<String> authStream = StreamController.broadcast();
+  static StreamController<String?> authStream = StreamController.broadcast();
   const DecidePage({super.key});
 
   @override
@@ -16,11 +17,13 @@ class DecidePage extends StatefulWidget {
 class _DecidePageState extends State<DecidePage> {
   @override
   void initState() {
+    getUid();
     super.initState();
   }
 
-  getUid() {
-    String uid = SharedPreferencesManager.getUid();
+  getUid() async {
+    String uid = await SharedPreferencesManager.getUid();
+
     if (uid.isEmpty) {
       DecidePage.authStream.add("");
     } else {
@@ -30,13 +33,15 @@ class _DecidePageState extends State<DecidePage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<String>(
+    return StreamBuilder<String?>(
         stream: DecidePage.authStream.stream,
         builder: (context, snapshot) {
-          if (snapshot.data == null || (snapshot.data?.isEmpty ?? true)) {
-            return OnboardingScreen();
-          } else {
+          if (snapshot.hasData) {
             return TweetsPage();
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return CircularProgressIndicator();
+          } else {
+            return OnboardingScreen();
           }
         });
   }

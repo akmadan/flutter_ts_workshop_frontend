@@ -70,13 +70,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         UserModel? userModel =
             await AuthRepo.getUserRepo(credential.user?.uid ?? "");
         if (userModel != null) {
-          SharedPreferencesManager.saveUid(credential.user?.uid ?? "");
+          await SharedPreferencesManager.saveUid(credential.user?.uid ?? "");
           DecidePage.authStream.add(credential.user?.uid ?? "");
           emit(AuthSuccessState());
         } else {
           emit(AuthErrorState(error: "Something went wrong"));
         }
       } else if (event.authType == AuthType.register) {
+        log(credential.user?.uid ?? "");
         bool success = await AuthRepo.createUserRepo(UserModel(
             uid: credential.user?.uid ?? "",
             tweets: [],
@@ -85,7 +86,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
             email: event.email,
             createdAt: DateTime.now()));
         if (success) {
-          SharedPreferencesManager.saveUid(credential.user?.uid ?? "");
+          log(credential.user?.uid ?? "");
+          await SharedPreferencesManager.saveUid(credential.user?.uid ?? "");
           DecidePage.authStream.add(credential.user?.uid ?? "");
           emit(AuthSuccessState());
         } else {
